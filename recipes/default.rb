@@ -61,6 +61,7 @@ python_pip "virtualenv" do
     action :install
 end
 python_virtualenv virtualenv_home do
+  interpreter node[:galaxy][:interpretor]
   action :create
   owner node[:galaxy][:user]
   group node[:galaxy][:group]
@@ -92,6 +93,16 @@ bash "extract file" do
     group node[:galaxy][:group]
     not_if { ::File.exist?(galaxy_config_file) }
 end
+# overwrite run.sh to support virtualenv
+if node[:galaxy][:overwrite_run_sh]
+  cookbook_file "#{node[:galaxy][:path]}/run.sh" do
+    source "run.sh"
+    owner node[:galaxy][:user]
+    group node[:galaxy][:group]
+    mode "0755"
+  end
+end
+
 
 database_setting = node[:galaxy][:db][:databaseusername]+":"+node[:galaxy][:db][:databasepassword]+"@"+node[:galaxy][:db][:hostname]+"/"+node[:galaxy][:db][:databasename]
 database_connection = ""

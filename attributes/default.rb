@@ -7,6 +7,10 @@ when "centos"
     default[:galaxy][:home]      = "/usr/local/galaxy"
     default[:galaxy][:shell]     = "/bin/bash"
     default[:galaxy][:password]  = nil
+    # virtualenv environment
+    default[:galaxy][:interpreter] = ""
+    # overwrite run.sh (for old version or customize run.sh)
+    default[:galaxy][:overwrite_run_sh] = false
 
     # path to galaxy systems
     # if you want to use latest version , set reference to 'tip'
