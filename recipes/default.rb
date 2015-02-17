@@ -102,6 +102,16 @@ if node[:galaxy][:overwrite_run_sh]
     mode "0755"
   end
 end
+# overwrite scripts/fetch_eggs.py to support virtualenv
+if node[:galaxy][:overwrite_fetch_eggs_py]
+  cookbook_file "#{node[:galaxy][:path]}/scripts/fetch_eggs.py" do
+    source "fetch_eggs.py"
+    owner node[:galaxy][:user]
+    group node[:galaxy][:group]
+    mode "0755"
+  end
+end
+
 
 
 database_setting = node[:galaxy][:db][:databaseusername]+":"+node[:galaxy][:db][:databasepassword]+"@"+node[:galaxy][:db][:hostname]+"/"+node[:galaxy][:db][:databasename]

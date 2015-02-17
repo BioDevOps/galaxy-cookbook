@@ -11,6 +11,8 @@ when "centos"
     default[:galaxy][:interpreter] = ""
     # overwrite run.sh (for old version or customize run.sh)
     default[:galaxy][:overwrite_run_sh] = false
+    # overwrite fetch_eggs.py (for old version or customize fetch_eggs.py)
+    default[:galaxy][:overwrite_fetch_eggs_py] = false
 
     # path to galaxy systems
     # if you want to use latest version , set reference to 'tip'
