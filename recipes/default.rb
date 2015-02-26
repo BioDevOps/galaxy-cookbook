@@ -111,6 +111,15 @@ if node[:galaxy][:overwrite_fetch_eggs_py]
     mode "0755"
   end
 end
+# wait 'serving on http' script
+package "expect"
+cookbook_file "/tmp/wait_server_started.sh" do
+  source "wait_server_started.sh"
+  owner node[:galaxy][:user]
+  group node[:galaxy][:group]
+  mode "0755"
+end
+
 
 
 
@@ -244,11 +253,26 @@ template "/etc/init.d/galaxy" do
 
     action     :create
 end
-bash "add_galaxy_service" do
+case node[:platform]
+when "centos"
+
+bash "add_galaxy_service_chkconfig" do
     code "chkconfig --add galaxy"
     user "root"
-
     action :run
+end
+when "ubuntu"
+bash "add_galaxy_service_update_rc_d" do
+    code "update-rc.d galaxy defaults"
+    user "root"
+    action :run
+end
+
+end
+# wait server start
+bash "wait server start" do
+  code   "/etc/init.d/galaxy restart ; /tmp/wait_server_started.sh ; /etc/init.d/galaxy stop"
+  action :run
 end
 service "galaxy" do
     action [:enable, :start]

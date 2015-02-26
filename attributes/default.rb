@@ -1,6 +1,3 @@
-case platform
-when "centos"
-
     # System account info
     default[:galaxy][:user]      = "galaxy"
     default[:galaxy][:group]     = "galaxy"
@@ -30,9 +27,11 @@ when "centos"
     # with tool shed, for the galaxy-admin's settins
     default[:galaxy][:shedtools_path]       = "#{galaxy[:home]}/shed_tools"
     default[:galaxy][:shedtools_config]     = "#{galaxy[:path]}/shed_tool_conf.xml"
-
+case platform
+when "centos"
     default[:galaxy][:initfile]  = "/etc/init.d/galaxy" if( platform_version.to_f < 7.0)
-
+when "ubuntu"
+    default[:galaxy][:initfile]  = "/etc/init.d/galaxy"
 end
 
 # repository 
