@@ -13,7 +13,7 @@
 
     # path to galaxy systems
     # if you want to use latest version , set reference to 'tip'
-    default[:galaxy][:reference] = "release_2014.08.11"
+    default[:galaxy][:reference] = "latest_2014.08.11"
     default[:galaxy][:path]      = "#{galaxy[:home]}/galaxy-dist"
 
     # normal service
