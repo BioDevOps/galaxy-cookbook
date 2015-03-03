@@ -213,6 +213,11 @@ tool_dependency_dir = node[:galaxy][:tool_dependency_dir]
 if tool_dependency_dir != nil
   insert_or_replace_line(galaxy_config_file, /^#tool_dependency_dir/, /^tool_dependency_dir/, "tool_dependency_dir = "+tool_dependency_dir)
 end
+# library_import_dir
+library_import_dir = node[:galaxy][:library_import_dir]
+if library_import_dir != nil
+  insert_or_replace_line(galaxy_config_file, /^#library_import_dir/, /^library_import_dir/, "library_import_dir = "+library_import_dir)
+end
 
 # setup compute cluster (job scheduler)
 case node[:galaxy][:cluster][:type]
