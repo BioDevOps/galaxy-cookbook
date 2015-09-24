@@ -1,12 +1,7 @@
-require 'serverspec'
+require 'spec_helper'
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
-
-#-----------------------------------------test for tmux
-describe package("tmux") do
-  it { should be_installed }
-end
+# include Serverspec::Helper::Exec
+# include Serverspec::Helper::DetectOS
 
 #-----------------------------------------test for nginx
 describe package("nginx") do
@@ -31,16 +26,18 @@ describe port(8080) do
   it { should be_listening }
 end
 
-describe command('/sbin/chkconfig | grep galaxy') do
-  its(:stdout) { should include('galaxy') }
-end
+# describe command('/sbin/chkconfig | grep galaxy') do
+#   its(:stdout) { should include('galaxy') }
+# end
 
 #-----------------------------------------test for java
-describe package("java") do
-  it { should be_installed }
-end
+# describe package("java") do
+#   it { should be_installed }
+# end
 
+# describe command('java -version') do
+#   it { should return_stdout /.*1.7/ }
+# end
 describe command('java -version') do
-  it { should return_stdout /.*1.7/ }
+  its(:stderr) { should match /.*1.7/ }
 end
-

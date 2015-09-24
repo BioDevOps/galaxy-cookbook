@@ -1,21 +1,33 @@
 ---
 driver:
-  name: docker
+  name: vagrant
 
 provisioner:
   name: chef_solo
+  chef_omnibus_install_options: ' -d /tmp/vagrant-cache/vagrant_omnibus'
 
 platforms:
-  #- name: ubuntu-12.04
-  - name: centos
-    driver_config:
-      image: centos:centos6
+  - name: ubuntu-14.04
+    driver:
+      vagrantfile_erb: Vagrantfile.erb
+    run_list:
+      - recipe[galaxy::change-apt]
 
 suites:
   - name: default
     run_list:
+      - recipe[java]
       - recipe[galaxy::default]
-      - recipe[galaxy::dev_tools]
+      #- recipe[galaxy::dev_tools]
       - recipe[galaxy::nginx]
-      - recipe[galaxy::java-1.7]
+      #- recipe[galaxy::java-1.7]
     attributes:
+      java:
+        install_flavor: "openjdk"
+        jdk_version: 7
+      galaxy:
+        reference: "latest_2014.08.11"
+        overwrite_run_sh: true
+        overwrite_fetch_eggs_py: true
+
+        tool_dependency_dir: "./tool_dependency_directory"
