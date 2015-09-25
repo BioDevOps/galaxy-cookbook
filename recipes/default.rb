@@ -147,9 +147,16 @@ case node[:galaxy][:db][:type]
     include_recipe 'galaxy::postgresql'
     database_connection = "postgresql://"+database_setting
 end
+#
+case node[:galaxy][:reference]
+when "latest_2014.08.11"
+  build_galaxy_config = "cd #{node[:galaxy][:path]} ; python ./scripts/check_python.py ; ./scripts/common_startup.sh"
+else
+  build_galaxy_config = "cd #{node[:galaxy][:path]} ; cp config/galaxy.ini.sample config/galaxy.ini ; python ./scripts/check_python.py ; ./scripts/common_startup.sh"
+end
 # create
 bash "build galaxy config" do
-  code   "cd #{node[:galaxy][:path]} ; python ./scripts/check_python.py ; ./scripts/common_startup.sh"
+  code   "#{build_galaxy_config}"
   action :run
   user node[:galaxy][:user]
   group node[:galaxy][:group]
@@ -177,14 +184,8 @@ case node[:galaxy][:db][:type]
     end
 end
 
-case node[:galaxy][:reference]
-when "latest_2014.08.11"
-  database_create_code = "cd #{node[:galaxy][:path]} ; ./create_db.sh"
-else
-  database_create_code = "cd #{node[:galaxy][:path]} ; cp config/galaxy.ini.sample config/galaxy.ini ;./create_db.sh"
-end
-
 # setup dataase
+database_create_code = "cd #{node[:galaxy][:path]} ; ./create_db.sh ; ./manage_db.sh upgrade"
 bash "setup galaxy database" do
   code   "#{database_create_code}"
   action :run
