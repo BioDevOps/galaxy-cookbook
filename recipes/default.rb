@@ -41,13 +41,13 @@ directory node[:galaxy][:path] do
     mode '0755'
 end
 # pip .cache
-directory node[:galaxy][:path]+"./.cache/" do
+directory node[:galaxy][:path]+"/.cache/" do
     owner node[:galaxy][:user]
     group      node[:galaxy][:group]
     mode '0755'
     recursive true
 end
-directory node[:galaxy][:path]+"./.cache/pip" do
+directory node[:galaxy][:path]+"/.cache/pip" do
     owner node[:galaxy][:user]
     group      node[:galaxy][:group]
     mode '0755'
