@@ -40,7 +40,19 @@ directory node[:galaxy][:path] do
     group      node[:galaxy][:group]
     mode '0755'
 end
-
+# pip .cache
+directory node[:galaxy][:path]+"./.cache/" do
+    owner node[:galaxy][:user]
+    group      node[:galaxy][:group]
+    mode '0755'
+    recursive true
+end
+directory node[:galaxy][:path]+"./.cache/pip" do
+    owner node[:galaxy][:user]
+    group      node[:galaxy][:group]
+    mode '0755'
+    recursive true
+end
 # galaxy for sed tools directory
 directory node[:galaxy][:shedtools_path] do
     owner node[:galaxy][:user]
@@ -164,9 +176,17 @@ case node[:galaxy][:db][:type]
       only_if { ::File.exist?(galaxy_config_file) && ::File.readlines(galaxy_config_file).grep(database_connection_line).any? }
     end
 end
+
+case node[:galaxy][:reference]
+when "latest_2014.08.11"
+  database_create_code = "cd #{node[:galaxy][:path]} ; ./create_db.sh"
+else
+  database_create_code = "cd #{node[:galaxy][:path]} ; cp config/galaxy.ini.sample config/galaxy.ini ;./create_db.sh"
+end
+
 # setup dataase
 bash "setup galaxy database" do
-  code   "cd #{node[:galaxy][:path]} ; ./create_db.sh"
+  code   "#{database_create_code}"
   action :run
   user node[:galaxy][:user]
   group node[:galaxy][:group]
@@ -198,6 +218,8 @@ def insert_or_replace_line(target_file, target_line_prefix,desired_line_prefix, 
   end
 end
 
+case node[:galaxy][:reference]
+when "latest_2014.08.11"
 # setup admin
 admin_users = node[:galaxy][:admin_users]
 if admin_users != nil
@@ -217,6 +239,7 @@ end
 library_import_dir = node[:galaxy][:library_import_dir]
 if library_import_dir != nil
   insert_or_replace_line(galaxy_config_file, /^#library_import_dir/, /^library_import_dir/, "library_import_dir = "+library_import_dir)
+end
 end
 
 # setup compute cluster (job scheduler)
@@ -283,5 +306,3 @@ service "galaxy" do
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => true
 end
-
-

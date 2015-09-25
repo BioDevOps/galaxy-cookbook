@@ -26,8 +26,9 @@ suites:
         install_flavor: "openjdk"
         jdk_version: 7
       galaxy:
-        reference: "latest_2014.08.11"
-        overwrite_run_sh: true
-        overwrite_fetch_eggs_py: true
+        reference: "latest_15.03"
+        #reference: "latest_2014.08.11"
+        #overwrite_run_sh: true
+        #overwrite_fetch_eggs_py: true
 
         tool_dependency_dir: "./tool_dependency_directory"
