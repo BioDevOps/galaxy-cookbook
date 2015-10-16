@@ -10,6 +10,8 @@ platforms:
   - name: ubuntu-14.04
     driver:
       vagrantfile_erb: Vagrantfile.erb
+      synced_folders:
+        - ['./result', '/tmp/result']
     run_list:
       - recipe[galaxy::change-apt]
 
@@ -26,6 +28,7 @@ suites:
         install_flavor: "openjdk"
         jdk_version: 7
       galaxy:
+        config: "config/galaxy.ini"
         reference: "latest_15.03"
         #reference: "latest_2014.08.11"
         #overwrite_run_sh: true

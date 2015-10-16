@@ -218,29 +218,28 @@ def insert_or_replace_line(target_file, target_line_prefix,desired_line_prefix, 
     end
   end
 end
-
-case node[:galaxy][:reference]
-when "latest_2014.08.11"
-# setup admin
-admin_users = node[:galaxy][:admin_users]
-if admin_users != nil
-  insert_or_replace_line(galaxy_config_file, /^#admin_users/, /^admin_users/, "admin_users = "+admin_users)
-end
+#
 # setup master_api_key
 master_api_key = node[:galaxy][:master_api_key]
 if master_api_key != nil
   insert_or_replace_line(galaxy_config_file, /^#master_api_key/, /^master_api_key/, "master_api_key = "+master_api_key)
+end
+
+# setup admin
+admin_users = node[:galaxy][:admin_users]
+if admin_users != nil
+  insert_or_replace_line(galaxy_config_file, /^#admin_users/, /^admin_users/, "admin_users = "+admin_users)
 end
 # setup tool_dependency_dir
 tool_dependency_dir = node[:galaxy][:tool_dependency_dir]
 if tool_dependency_dir != nil
   insert_or_replace_line(galaxy_config_file, /^#tool_dependency_dir/, /^tool_dependency_dir/, "tool_dependency_dir = "+tool_dependency_dir)
 end
+
 # library_import_dir
 library_import_dir = node[:galaxy][:library_import_dir]
 if library_import_dir != nil
   insert_or_replace_line(galaxy_config_file, /^#library_import_dir/, /^library_import_dir/, "library_import_dir = "+library_import_dir)
-end
 end
 
 # setup compute cluster (job scheduler)
