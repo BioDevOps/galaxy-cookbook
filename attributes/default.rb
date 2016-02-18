@@ -34,7 +34,7 @@ when "ubuntu"
     default[:galaxy][:initfile]  = "/etc/init.d/galaxy"
 end
 
-# repository 
+# repository
 default[:galaxy][:repository]    = "https://bitbucket.org/galaxy/galaxy-dist/"
 
 # about nginx site proxy settings
@@ -58,8 +58,12 @@ default[:galaxy][:master_api_key] = nil
 default[:galaxy][:tool_dependency_dir] = nil
 
 # jobs on a compute cluster
-# type "None" is not use cluster. 
+# type "None" is not use cluster.
 #      "sge" is sun gridengine. sge using drmaa
 default[:galasy][:cluster][:type] = "None"
 default[:galasy][:cluster][:jobconfigfile] = "job_conf.xml"
 default[:galaxy][:cluster][:drmaa][:nativeSpecification] = "-b n"
+
+#
+# for config/galaxy.ini
+default[:galaxy][:galaxy_ini]={}

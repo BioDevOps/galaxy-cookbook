@@ -41,3 +41,10 @@ end
 describe command('java -version') do
   its(:stderr) { should match /.*1.7/ }
 end
+
+describe command('grep admin_users /usr/local/galaxy/galaxy-dist/config/galaxy.ini') do
+  its(:stdout) {
+     should match /galaxy.org/
+     should match /^admin_users/
+  }
+end

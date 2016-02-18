@@ -220,27 +220,41 @@ def insert_or_replace_line(target_file, target_line_prefix,desired_line_prefix, 
 end
 #
 # setup master_api_key
+# Deprecated remove 2.0.0
 master_api_key = node[:galaxy][:master_api_key]
 if master_api_key != nil
   insert_or_replace_line(galaxy_config_file, /^#master_api_key/, /^master_api_key/, "master_api_key = "+master_api_key)
 end
 
 # setup admin
+# Deprecated remvoe 2.0.0
 admin_users = node[:galaxy][:admin_users]
 if admin_users != nil
   insert_or_replace_line(galaxy_config_file, /^#admin_users/, /^admin_users/, "admin_users = "+admin_users)
 end
 # setup tool_dependency_dir
+# Deprecated remove 2.0.0
 tool_dependency_dir = node[:galaxy][:tool_dependency_dir]
 if tool_dependency_dir != nil
   insert_or_replace_line(galaxy_config_file, /^#tool_dependency_dir/, /^tool_dependency_dir/, "tool_dependency_dir = "+tool_dependency_dir)
 end
 
 # library_import_dir
+# Deprecated remove 2.0.0
 library_import_dir = node[:galaxy][:library_import_dir]
 if library_import_dir != nil
   insert_or_replace_line(galaxy_config_file, /^#library_import_dir/, /^library_import_dir/, "library_import_dir = "+library_import_dir)
 end
+
+# galaxy.ini setting
+#
+galaxyinisettings=node[:galaxy][:galaxy_ini]
+if galaxyinisettings != nil
+  galaxyinisettings.each{|key, value|
+    insert_or_replace_line(galaxy_config_file, /^##{key}/, /^#{key}/, key+" = "+value)
+  }
+end
+
 
 # setup compute cluster (job scheduler)
 case node[:galaxy][:cluster][:type]

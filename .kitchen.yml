@@ -29,9 +29,13 @@ suites:
         jdk_version: 7
       galaxy:
         config: "config/galaxy.ini"
-        reference: "latest_15.03"
+        reference: "latest_15.07"
         #reference: "latest_2014.08.11"
         #overwrite_run_sh: true
         #overwrite_fetch_eggs_py: true
 
-        tool_dependency_dir: "./tool_dependency_directory"
+        galaxy_ini:
+          admin_users: "admin@galaxy.org"
+          tool_dependency_dir: "./tool_dependency_directory"
+          allow_library_path_paste: "True"
+          cleanup_job: "onsuccess"
