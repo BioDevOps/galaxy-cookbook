@@ -1,9 +1,6 @@
-source 'http://api.berkshelf.com'
+source "https://supermarket.getchef.com"
 
-cookbook "yum"
-cookbook "python"
-cookbook "mercurial"
-#cookbook "vim"
+cookbook "poise-python", "1.6.0"
 cookbook "java"
 
 metadata

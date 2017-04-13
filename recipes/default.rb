@@ -12,7 +12,6 @@ user "galaxy" do
     shell    node[:galaxy][:shell]
     password node[:galaxy][:password]
 
-    supports :manage_home => true
     action   :create
 end
 # set directory owner and permission mainly for shared file system
@@ -22,7 +21,7 @@ directory node[:galaxy][:home] do
     mode '0755'
 end
 
-include_recipe "python"
+include_recipe "poise-python"
 
 #include_recipe "mercurial"
 #mercurial node[:galaxy][:path] do
@@ -62,20 +61,22 @@ directory node[:galaxy][:shedtools_path] do
     action   :create
 end
 
-include_recipe "python"
+include_recipe "poise-python"
 
 # virtualenv related variables
 virtualenv_home  = node[:galaxy][:path]+"/.venv"
 user_name        = node[:galaxy][:user]
 
 # install
-python_pip "virtualenv" do
-    action :install
+#python_pip "virtualenv" do
+#    action :install
+#end
+python_package 'virtualenv' do
 end
 python_virtualenv virtualenv_home do
-  interpreter node[:galaxy][:interpretor]
+  #interpreter node[:galaxy][:interpretor]
   action :create
-  owner node[:galaxy][:user]
+  user node[:galaxy][:user]
   group node[:galaxy][:group]
 end
 
